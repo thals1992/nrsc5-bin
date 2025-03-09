@@ -7,7 +7,7 @@ jobs:
     name: Ubuntu CI
     strategy:
       matrix:
-        os: [ubuntu-22.04, ubuntu-24.04]
+        os: [ubuntu-24.04]
     runs-on: ${{ matrix.os }}
     steps:
       - name: Install dependencies
@@ -31,12 +31,12 @@ jobs:
         uses: actions/upload-artifact@v4
         with:
           name: ubuntu-build
-          path: /nrsc5/
+          path: /nrsc5/build*/
   macos-build:
     name: MacOS CI
     strategy:
       matrix:
-        os: [macos-13, macos-14]
+        os: [macos-14]
     runs-on: ${{ matrix.os }}
     steps:
       - name: Install dependencies
@@ -63,4 +63,4 @@ jobs:
         uses: actions/upload-artifact@v4
         with:
           name: macos-build
-          path: /nrsc5/
+          path: /nrsc5/build*/
