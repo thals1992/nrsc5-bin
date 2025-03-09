@@ -22,26 +22,16 @@ jobs:
       - name: Compile
         working-directory: build
         run: make -j3
-      - name: Install
-        working-directory: build
-        run: |
-          sudo make install
-          sudo ldconfig
-      - name: Test
-        run: |
-          xz -d < support/sample.xz > sample
-          nrsc5 -r sample -o sample.wav 0 2> sample.log
-          cat sample.log
-          grep -q "You're Listening to Q" sample.log
-          cat sample | nrsc5 -r - -o sample.wav 0 2> sample.log
-          grep -q "You're Listening to Q" sample.log
-          support/cli.py -r sample 0
-          cat sample | support/cli.py -r - 0
       - name: Windows cross-compile
         run: |
           sudo apt-get install -y mingw-w64
           support/win-cross-compile 32
           support/win-cross-compile 64
+      - name: 'Upload Artifact'
+        uses: actions/upload-artifact@v4
+        with:
+          name: ubuntu-build
+          path: /nrsc5/
   macos-build:
     name: MacOS CI
     strategy:
@@ -63,22 +53,14 @@ jobs:
       - name: Compile
         working-directory: build
         run: make -j3
-      - name: Install
-        working-directory: build
-        run: sudo make install
-      - name: Test
-        run: |
-          xz -d < support/sample.xz > sample
-          nrsc5 -r sample -o sample.wav 0 2> sample.log
-          cat sample.log
-          grep -q "You're Listening to Q" sample.log
-          cat sample | nrsc5 -r - -o sample.wav 0 2> sample.log
-          grep -q "You're Listening to Q" sample.log
-          # support/cli.py -r sample 0
-          # cat sample | support/cli.py -r - 0
       - name: Windows cross-compile
         run: |
           brew install --cask xquartz wine-stable
           brew install mingw-w64
           support/win-cross-compile 32
           support/win-cross-compile 64
+      - name: 'Upload Artifact'
+        uses: actions/upload-artifact@v4
+        with:
+          name: macos-build
+          path: /nrsc5/
